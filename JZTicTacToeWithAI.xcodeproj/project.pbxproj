@@ -19,6 +19,10 @@
 		CF1A2F2E19C625F700AC2CB4 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF1A2F2C19C625F700AC2CB4 /* MainStoryboard.storyboard */; };
 		CF1A2F3119C625F700AC2CB4 /* JZViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF1A2F3019C625F700AC2CB4 /* JZViewController.m */; };
 		CF1A2F3E19C6291900AC2CB4 /* JZCheckBox.m in Sources */ = {isa = PBXBuildFile; fileRef = CF1A2F3C19C6272800AC2CB4 /* JZCheckBox.m */; };
+		CF1A2F4519C7DF6100AC2CB4 /* bigO.png in Resources */ = {isa = PBXBuildFile; fileRef = CF1A2F4319C7DF6100AC2CB4 /* bigO.png */; };
+		CF1A2F4619C7DF6100AC2CB4 /* bigX.png in Resources */ = {isa = PBXBuildFile; fileRef = CF1A2F4419C7DF6100AC2CB4 /* bigX.png */; };
+		CF1A2F4919C7DF6B00AC2CB4 /* checkbox_yes.png in Resources */ = {isa = PBXBuildFile; fileRef = CF1A2F4719C7DF6B00AC2CB4 /* checkbox_yes.png */; };
+		CF1A2F4A19C7DF6B00AC2CB4 /* checkbox_no.png in Resources */ = {isa = PBXBuildFile; fileRef = CF1A2F4819C7DF6B00AC2CB4 /* checkbox_no.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +44,10 @@
 		CF1A2F3019C625F700AC2CB4 /* JZViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JZViewController.m; sourceTree = "<group>"; };
 		CF1A2F3B19C6272800AC2CB4 /* JZCheckBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JZCheckBox.h; sourceTree = "<group>"; };
 		CF1A2F3C19C6272800AC2CB4 /* JZCheckBox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JZCheckBox.m; sourceTree = "<group>"; };
+		CF1A2F4319C7DF6100AC2CB4 /* bigO.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bigO.png; sourceTree = "<group>"; };
+		CF1A2F4419C7DF6100AC2CB4 /* bigX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bigX.png; sourceTree = "<group>"; };
+		CF1A2F4719C7DF6B00AC2CB4 /* checkbox_yes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_yes.png; sourceTree = "<group>"; };
+		CF1A2F4819C7DF6B00AC2CB4 /* checkbox_no.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_no.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +109,10 @@
 		CF1A2F1B19C625F700AC2CB4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CF1A2F4719C7DF6B00AC2CB4 /* checkbox_yes.png */,
+				CF1A2F4819C7DF6B00AC2CB4 /* checkbox_no.png */,
+				CF1A2F4319C7DF6100AC2CB4 /* bigO.png */,
+				CF1A2F4419C7DF6100AC2CB4 /* bigX.png */,
 				CF1A2F1C19C625F700AC2CB4 /* JZTicTacToeWithAI-Info.plist */,
 				CF1A2F1D19C625F700AC2CB4 /* InfoPlist.strings */,
 				CF1A2F2019C625F700AC2CB4 /* main.m */,
@@ -169,6 +181,10 @@
 				CF1A2F2919C625F700AC2CB4 /* Default@2x.png in Resources */,
 				CF1A2F2B19C625F700AC2CB4 /* Default-568h@2x.png in Resources */,
 				CF1A2F2E19C625F700AC2CB4 /* MainStoryboard.storyboard in Resources */,
+				CF1A2F4519C7DF6100AC2CB4 /* bigO.png in Resources */,
+				CF1A2F4619C7DF6100AC2CB4 /* bigX.png in Resources */,
+				CF1A2F4919C7DF6B00AC2CB4 /* checkbox_yes.png in Resources */,
+				CF1A2F4A19C7DF6B00AC2CB4 /* checkbox_no.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

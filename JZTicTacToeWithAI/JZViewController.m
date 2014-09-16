@@ -203,15 +203,17 @@ void boardCopy(char from[], char to[]){
      to[i] = from[i];
      */
 }
-int getConerPosition(int pos[], int num)
+
+void getCornerPos(int pos[], int num, int cornerPos[], int *cornerNum)
 {
-    for (int i=0; i<num; i++){
+    for(int i=0; i<num; i++){
         if((pos[i] == 0) || (pos[i] == 2) || (pos[i] == 6) || (pos[i] == 8)){
-            return i;
+            cornerPos[*cornerNum] = pos[i];
+            (*cornerNum)++;
         }
     }
-    return -1;
 }
+
 
 int AI(char Bo[]){
     int num;
@@ -250,13 +252,19 @@ int AI(char Bo[]){
     
     //if computer cannot win, and the human cannot win, then
     //first to check if there is any corner available, if yes, take it
-    int corner;
-    if((corner = getConerPosition(pos, num)) != -1){
-        return pos[corner];
-    }
+    int cornerPos[4];
+    int cornerNum = 0;
+    getCornerPos(pos, num, cornerPos, &cornerNum);
+    if(cornerNum > 0){
+        srand(time(NULL));
+        int rd = random(cornerNum);
+        int tmp = cornerPos[rd]; //return any avaibale position
+        return tmp;
+    }    
+    
     //move to any avaibale position
     srand(time(NULL));
-    return pos[random(num-1)]; //return any avaibale position
+    return pos[random(num)]; //return any avaibale position
 }
 
 @end
