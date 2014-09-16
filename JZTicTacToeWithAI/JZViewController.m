@@ -135,6 +135,7 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
         [checkBox setNeedsDisplay];
         board[i] = '-';
     }
+    NSLog(@"Reset");
 }
 
 - (IBAction)buttonNewGame:(id)sender {
@@ -147,6 +148,7 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
         [checkBox setNeedsDisplay];
         board[i] = '-';
     }
+    NSLog(@"New Game");
 }
 
 
