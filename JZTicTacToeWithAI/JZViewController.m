@@ -8,11 +8,15 @@
 
 #import "JZViewController.h"
 #import "JZCheckBox.h"
+#include <stdlib.h>
 
 
 #define TicTacToeTotalNum  9
 #define TicTacToeRows  3
 #define TicTacToeCols  3
+
+#define MaxPathLength  100
+#define TicTacToeLogFile  "ticTacToe.log"
 
 
 @interface JZViewController ()
@@ -25,9 +29,31 @@
 
 char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
 
+- (BOOL)redirectNSLog {
+    // Create log file
+    NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    NSString *fileName = [documentsDirectory stringByAppendingPathComponent:@TicTacToeLogFile];
+
+    [@"" writeToFile:fileName atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    id fileHandle = [NSFileHandle fileHandleForWritingAtPath:fileName];
+    if (!fileHandle)
+        return NSLog(@"Opening log failed"), NO;
+
+    // Redirect stderr
+    int err = dup2([fileHandle fileDescriptor], STDERR_FILENO);
+    if (!err)
+        return NSLog(@"Couldn't redirect stderr"), NO;
+    return YES;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+#ifdef DEBUG
+    [self redirectNSLog ];  
+#endif
+    
     [self generateInitData];
     self.youWins = 0;
     self.computerWins = 0;
@@ -59,6 +85,14 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
             [self.scrollView addSubview:checkBox];
         }
     }
+    int posAI = AI(board);
+    Move(board,posAI,'x');
+    NSLog(@"Computer pick position: %d, board=%s",posAI,board);
+    JZCheckBox *myMoveCheckBox = self.checkBoxHolder[posAI];
+    myMoveCheckBox.offImage = [UIImage imageNamed:@"bigX"];
+    myMoveCheckBox.onImage = [UIImage imageNamed:@"bigX"];
+    myMoveCheckBox.isChecked = YES;
+    [myMoveCheckBox setNeedsDisplay];
 }
 
 
@@ -86,16 +120,6 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
             return;
         }
         
-        if(isFull(board) == 1){
-            ++self.draws;
-            NSLog(@"Draw. Total: %d", self.draws);
-            self.labelDraws.text = [NSString stringWithFormat:@"Draws: %d", self.draws];
-            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@"Draw" message:@"No winer this time." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            alert.tag = 12;
-            [alert show];
-            return;
-        }
-        
         int posAI = AI(board);
         Move(board,posAI,'x');
         NSLog(@"Computer pick position: %d, board=%s",posAI,board);
@@ -114,6 +138,17 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
             [alert show];
             return;
         }
+        
+        if(isFull(board) == 1){
+            ++self.draws;
+            NSLog(@"Draw. Total: %d", self.draws);
+            self.labelDraws.text = [NSString stringWithFormat:@"Draws: %d", self.draws];
+            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@"Draw" message:@"No winer this time." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            alert.tag = 12;
+            [alert show];
+            return;
+        }
+
     }
 }
 
@@ -136,6 +171,7 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
         board[i] = '-';
     }
     NSLog(@"Reset");
+    [self takeFirstRandomCornerPosition];
 }
 
 - (IBAction)buttonNewGame:(id)sender {
@@ -149,12 +185,24 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
         board[i] = '-';
     }
     NSLog(@"New Game");
+    [self takeFirstRandomCornerPosition];
 }
 
+-(void)takeFirstRandomCornerPosition
+{
+    int cornerPos[4]={0,2,6,8};
+    int posAI = cornerPos[arc4random() % 4];
+    Move(board,posAI,'x');
+    NSLog(@"Computer pick position: %d, board=%s",posAI,board);
+    JZCheckBox *myMoveCheckBox = self.checkBoxHolder[posAI];
+    myMoveCheckBox.offImage = [UIImage imageNamed:@"bigX"];
+    myMoveCheckBox.onImage = [UIImage imageNamed:@"bigX"];
+    myMoveCheckBox.isChecked = YES;
+    [myMoveCheckBox setNeedsDisplay];
+}
 
 //============================================================
-// main str
-#define random(x) (rand()%x)
+//strategy core code for tic tac toe 
 
 int isWin(char Bo[],char player){
     if(((Bo[0] == Bo[1]) && (Bo[1] == Bo[2]) && (Bo[2] == player)) ||
@@ -182,7 +230,7 @@ int isFull(char Bo[])
     return 1;
 }
 
-void availablePos(char Bo[],int Pos[]){
+void availablePos(char Bo[],int Pos[], int *num){
     int i,j;
     j = 0;
     for(i = 0; i < TicTacToeTotalNum; i++){
@@ -191,6 +239,7 @@ void availablePos(char Bo[],int Pos[]){
             j++;
         }
     }
+    *num = j;
 }
 
 void Move(char Bo[],int pos,char player){
@@ -206,13 +255,25 @@ void boardCopy(char from[], char to[]){
      */
 }
 
-void getCornerPos(int pos[], int num, int cornerPos[], int *cornerNum)
+int getCornerPos(int pos[], int num)
 {
+    int cornerPos[4];
+    int cornerNum = 0;
     for(int i=0; i<num; i++){
         if((pos[i] == 0) || (pos[i] == 2) || (pos[i] == 6) || (pos[i] == 8)){
-            cornerPos[*cornerNum] = pos[i];
-            (*cornerNum)++;
+            cornerPos[cornerNum] = pos[i];
+            NSLog(@"available cornerPos[%d]=%d",cornerNum, cornerPos[cornerNum]);
+            (cornerNum)++;
         }
+    }
+
+    if(cornerNum > 0){
+        int rd = arc4random() % cornerNum;
+        int tmp = cornerPos[rd]; //return any avaibale position
+        NSLog(@"Computer pick: cornerPos[%d]=%d", rd, cornerPos[rd]);
+        return tmp;
+    }else{
+        return -1;
     }
 }
 
@@ -223,13 +284,7 @@ int AI(char Bo[]){
     //will keep all availabel positon index, -1 is unavailable
     int pos[TicTacToeTotalNum] = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
     int i;
-    availablePos(Bo,pos);
-    for(i = 0; i < TicTacToeTotalNum; i++){
-        if(pos[i] == -1){  //get the total available positons
-            num = i;  // the total number of avaiable moving positions
-            break;
-        }
-    }
+    availablePos(Bo,pos,&num);
     
     //check to see if computer can win for all the avaibale moving position
     // if computer can find that position, than computer win
@@ -254,19 +309,16 @@ int AI(char Bo[]){
     
     //if computer cannot win, and the human cannot win, then
     //first to check if there is any corner available, if yes, take it
-    int cornerPos[4];
-    int cornerNum = 0;
-    getCornerPos(pos, num, cornerPos, &cornerNum);
-    if(cornerNum > 0){
-        srand(time(NULL));
-        int rd = random(cornerNum);
-        int tmp = cornerPos[rd]; //return any avaibale position
-        return tmp;
-    }    
+    //otherwise take any available position
+    
+    int cornerPos = -1;
+    cornerPos = getCornerPos(pos, num);
+    if(cornerPos != -1)
+        return cornerPos;
     
     //move to any avaibale position
-    srand(time(NULL));
-    return pos[random(num)]; //return any avaibale position
+    return pos[arc4random() % num]; //return any avaibale position
 }
+
 
 @end
