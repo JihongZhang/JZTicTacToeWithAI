@@ -15,8 +15,8 @@
 
 @protocol CheckBoxDelegate;
 
-/** This my checkBox widget
- * checkbox can asociate with tile or key
+/** This is my checkBox widget
+ * checkbox can asociate with tile, key, or state
  */
 @interface JZCheckBox : UIView
 

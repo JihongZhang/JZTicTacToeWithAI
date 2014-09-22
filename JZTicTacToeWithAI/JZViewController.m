@@ -15,7 +15,6 @@
 #define TicTacToeRows  3
 #define TicTacToeCols  3
 
-#define MaxPathLength  100
 #define TicTacToeLogFile  "ticTacToe.log"
 
 
@@ -27,8 +26,14 @@
 
 @implementation JZViewController
 
+#pragma mark - game main board status
+//'-' means avaibale moving position for both side
+//'o' means humane taken position
+//'x' means computer taken position
 char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
 
+
+#pragma mark - log file
 - (BOOL)redirectNSLog {
     // Create log file
     NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
@@ -46,6 +51,8 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
     return YES;
 }
 
+
+#pragma mark - main UI
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -85,14 +92,7 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
             [self.scrollView addSubview:checkBox];
         }
     }
-    int posAI = AI(board);
-    Move(board,posAI,'x');
-    NSLog(@"Computer pick position: %d, board=%s",posAI,board);
-    JZCheckBox *myMoveCheckBox = self.checkBoxHolder[posAI];
-    myMoveCheckBox.offImage = [UIImage imageNamed:@"bigX"];
-    myMoveCheckBox.onImage = [UIImage imageNamed:@"bigX"];
-    myMoveCheckBox.isChecked = YES;
-    [myMoveCheckBox setNeedsDisplay];
+    [self takeFirstRandomCornerPosition];
 }
 
 
@@ -104,7 +104,7 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
         return;
     }
     
-    if(checkBox.key != @"x"){
+    if(checkBox.key != @"x"){  //only human click on the check box
         checkBox.offImage = [UIImage imageNamed:@"bigO"];
         checkBox.onImage = [UIImage imageNamed:@"bigO"];
         
@@ -114,12 +114,11 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
             ++self.youWins;
             NSLog(@"Human win. Total: %d", self.youWins);
             self.labelYouWins.text = [NSString stringWithFormat:@"You wins: %d", self.youWins];
-            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@"You Win" message:@"Congratulation!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            alert.tag = 11;
-            [alert show];
+            [self popUpGameResult:@"You Win" message:@"Congratulation!"];
             return;
         }
         
+        //after human moving, computer needs to pick up the best position to move
         int posAI = AI(board);
         Move(board,posAI,'x');
         NSLog(@"Computer pick position: %d, board=%s",posAI,board);
@@ -133,9 +132,7 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
             ++self.computerWins;
             NSLog(@"Computer win. Total: %d", self.computerWins);
             self.labelComputerWins.text = [NSString stringWithFormat:@"Computer wins: %d", self.computerWins];
-            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@"You lose" message:@"Sorry!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            alert.tag = 13;
-            [alert show];
+            [self popUpGameResult:@"You lose" message:@"Sorry!"];
             return;
         }
         
@@ -143,15 +140,18 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
             ++self.draws;
             NSLog(@"Draw. Total: %d", self.draws);
             self.labelDraws.text = [NSString stringWithFormat:@"Draws: %d", self.draws];
-            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@"Draw" message:@"No winer this time." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            alert.tag = 12;
-            [alert show];
+            [self popUpGameResult:@"Draw" message:@"No winer this time."];
             return;
         }
-
     }
 }
 
+-(void)popUpGameResult:(NSString*)title message:(NSString*)message
+{
+    UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
+    return;
+}
 
 - (IBAction)buttonReset:(id)sender {
     self.youWins = 0;
@@ -201,8 +201,9 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
     [myMoveCheckBox setNeedsDisplay];
 }
 
+
 //============================================================
-//strategy core code for tic tac toe 
+#pragma mark - strategy core code for tic tac toe 
 
 int isWin(char Bo[],char player){
     if(((Bo[0] == Bo[1]) && (Bo[1] == Bo[2]) && (Bo[2] == player)) ||
@@ -230,6 +231,11 @@ int isFull(char Bo[])
     return 1;
 }
 
+/** return number of available moving positions and their indexes
+    in param: Bo[] - the game main board status
+    out param: Pos[] - available moving position indeses
+    out param: *num - number of available moving positions
+ */
 void availablePos(char Bo[],int Pos[], int *num){
     int i,j;
     j = 0;
@@ -248,13 +254,10 @@ void Move(char Bo[],int pos,char player){
 
 void boardCopy(char from[], char to[]){
     memmove( (void*)to, (void*)from, TicTacToeTotalNum * sizeof(char) );
-    /*
-     int i;
-     for(i = 0; i < TicTacToeTotalNum; i++)
-     to[i] = from[i];
-     */
 }
 
+//return avaibale random corner position, if any
+//otherwise return -1
 int getCornerPos(int pos[], int num)
 {
     int cornerPos[4];
@@ -278,6 +281,9 @@ int getCornerPos(int pos[], int num)
 }
 
 
+/** return the best moving position for the computer
+    in param: Bo[] - the game main board status
+ */
 int AI(char Bo[]){
     int num;
     char AI_Board[TicTacToeTotalNum];
@@ -285,6 +291,7 @@ int AI(char Bo[]){
     int pos[TicTacToeTotalNum] = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
     int i;
     availablePos(Bo,pos,&num);
+    
     
     //check to see if computer can win for all the avaibale moving position
     // if computer can find that position, than computer win
@@ -308,9 +315,11 @@ int AI(char Bo[]){
     }
     
     //if computer cannot win, and the human cannot win, then
-    //first to check if there is any corner available, if yes, take it
+    //patch: first to check if the center position is available,
+    //and than to check if there is any corner available, if yes, take it
     //otherwise take any available position
-    
+    if(Bo[4] == '-')
+        return 4;
     int cornerPos = -1;
     cornerPos = getCornerPos(pos, num);
     if(cornerPos != -1)

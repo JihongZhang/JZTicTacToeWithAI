@@ -109,26 +109,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="27" y="39"/>
+            <point key="canvasLocation" x="-13" y="-78"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="JZViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/JZViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="buttonNewGame:"/>
-                <relationship kind="action" name="buttonReset:"/>
-                <relationship kind="outlet" name="labelComputerWin" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelComputerWins" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelDraws" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="labelYouWins" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "JZTicTacToeWithAI/JZViewController.m"
-         timestampString = "432720917.388604"
+         timestampString = "433054138.580591"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "275"
-         endingLineNumber = "275"
+         startingLineNumber = "278"
+         endingLineNumber = "278"
          landmarkName = "getCornerPos()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "JZTicTacToeWithAI/JZViewController.m"
-         timestampString = "432715033.892944"
+         timestampString = "433054086.397673"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "37"
-         endingLineNumber = "37"
+         startingLineNumber = "42"
+         endingLineNumber = "42"
          landmarkName = "-redirectNSLog"
          landmarkType = "5">
       </FileBreakpoint>
@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "JZTicTacToeWithAI/JZViewController.m"
-         timestampString = "432718368.791877"
+         timestampString = "433054086.397673"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "89"
-         endingLineNumber = "89"
+         startingLineNumber = "95"
+         endingLineNumber = "95"
          landmarkName = "-generateInitData"
          landmarkType = "5">
       </FileBreakpoint>
@@ -47,24 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "JZTicTacToeWithAI/JZViewController.m"
-         timestampString = "432718396.544496"
+         timestampString = "433054138.580591"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "88"
-         endingLineNumber = "88"
-         landmarkName = "-generateInitData"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "JZTicTacToeWithAI/JZViewController.m"
-         timestampString = "432720917.388604"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "309"
-         endingLineNumber = "309"
+         startingLineNumber = "316"
+         endingLineNumber = "316"
          landmarkName = "AI()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -73,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "JZTicTacToeWithAI/JZViewController.m"
-         timestampString = "432720917.388604"
+         timestampString = "433054138.580591"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "320"
-         endingLineNumber = "320"
+         startingLineNumber = "329"
+         endingLineNumber = "329"
          landmarkName = "AI()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -86,11 +73,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "JZTicTacToeWithAI/JZViewController.m"
-         timestampString = "432720821.646391"
+         timestampString = "433054138.580591"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "133"
-         endingLineNumber = "133"
+         startingLineNumber = "132"
+         endingLineNumber = "132"
          landmarkName = "-onCheckBoxChange:isChecked:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -99,11 +86,50 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "JZTicTacToeWithAI/JZViewController.m"
-         timestampString = "432720845.285769"
+         timestampString = "433054138.580591"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "142"
-         endingLineNumber = "142"
+         startingLineNumber = "139"
+         endingLineNumber = "139"
+         landmarkName = "-onCheckBoxChange:isChecked:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "JZTicTacToeWithAI/JZViewController.m"
+         timestampString = "433054138.580591"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "128"
+         endingLineNumber = "128"
+         landmarkName = "-onCheckBoxChange:isChecked:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "JZTicTacToeWithAI/JZCheckBox.m"
+         timestampString = "433054086.397673"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "90"
+         endingLineNumber = "90"
+         landmarkName = "-drawRect:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "JZTicTacToeWithAI/JZViewController.m"
+         timestampString = "433054135.422567"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "122"
+         endingLineNumber = "122"
          landmarkName = "-onCheckBoxChange:isChecked:"
          landmarkType = "5">
       </FileBreakpoint>

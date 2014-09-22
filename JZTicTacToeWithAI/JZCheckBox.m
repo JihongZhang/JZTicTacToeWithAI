@@ -11,6 +11,9 @@
 
 @interface JZCheckBox()
 
+@property (nonatomic) CGFloat checkBoxWidth;
+@property (nonatomic) CGFloat checkBoxHeight;
+
 @end
 
 
@@ -23,6 +26,8 @@
     if (self) {
         // Initialization code
         self.isChecked = false;
+        self.checkBoxHeight = frame.size.height;
+        self.checkBoxWidth = frame.size.width;
     }
     return self;
 }
@@ -31,6 +36,8 @@
 {
     if(self = [super initWithFrame:frame]){
         self.isChecked = false;
+        self.checkBoxHeight = frame.size.height;
+        self.checkBoxWidth = frame.size.width;
         self.title = title;
         self.backgroundColor = [UIColor clearColor];
     
@@ -45,6 +52,8 @@
 {
     if(self = [super initWithFrame:frame]){
         self.isChecked = false;
+        self.checkBoxHeight = frame.size.height;
+        self.checkBoxWidth = frame.size.width;
         self.key = key;
         self.index = index;
         
@@ -60,6 +69,8 @@
 {
     if(self = [super initWithFrame:frame]){
         self.isChecked = state;
+        self.checkBoxHeight = frame.size.height;
+        self.checkBoxWidth = frame.size.width;
         self.key = key;
         self.index = index;
         
@@ -73,17 +84,17 @@
 }
 
 // Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
     UIImage *image = self.isChecked ? self.onImage : self.offImage;
-    [image drawInRect:CGRectMake(0, 0, myCheckboxImageWidth, myCheckboxImageHeight)];
+    [image drawInRect:CGRectMake(0, 0, self.checkBoxWidth, self.checkBoxHeight)];
     
     UIFont *font = [UIFont systemFontOfSize:myFontSize];
-    [self.title drawAtPoint:CGPointMake(myCheckboxImageWidth + myMargin, 0) withFont:font];
+    [self.title drawAtPoint:CGPointMake(self.checkBoxWidth + myMargin, 0) withFont:font];
     
 }
 
+//overwite touchesEnded
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     self.isChecked = !self.isChecked;
