@@ -22,6 +22,7 @@
 @property (nonatomic) int youWins;
 @property (nonatomic) int computerWins;
 @property (nonatomic) int draws;
+@property (nonatomic) BOOL gameIsOver;
 @end
 
 @implementation JZViewController
@@ -65,6 +66,7 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
     self.youWins = 0;
     self.computerWins = 0;
     self.draws = 0;
+    self.gameIsOver = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -92,20 +94,26 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
             [self.scrollView addSubview:checkBox];
         }
     }
-    [self takeFirstRandomCornerPosition];
+    if(self.segmentedControl.selectedSegmentIndex == 1){ // computer goes first
+        [self takeFirstRandomCornerPosition];
+    }
 }
 
 
 #pragma mark - JZCheckBox delegate
 -(void) onCheckBoxChange:(JZCheckBox *)checkBox isChecked:(BOOL)isChecked
 {
+    if(self.self.gameIsOver == YES){
+        return;
+    }
+        
     if(isChecked == NO){
         checkBox.isChecked = YES;  //in case multi click
         return;
     }
     
     if(checkBox.key != @"x"){  //only human click on the check box
-        checkBox.offImage = [UIImage imageNamed:@"bigO"];
+        //checkBox.offImage = [UIImage imageNamed:@"bigO"];
         checkBox.onImage = [UIImage imageNamed:@"bigO"];
         
         Move(board,checkBox.index,'o');
@@ -117,25 +125,6 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
             [self popUpGameResult:@"You Win" message:@"Congratulation!"];
             return;
         }
-        
-        //after human moving, computer needs to pick up the best position to move
-        int posAI = AI(board);
-        Move(board,posAI,'x');
-        NSLog(@"Computer pick position: %d, board=%s",posAI,board);
-        JZCheckBox *myMoveCheckBox = self.checkBoxHolder[posAI];
-        myMoveCheckBox.offImage = [UIImage imageNamed:@"bigX"];
-        myMoveCheckBox.onImage = [UIImage imageNamed:@"bigX"];
-        myMoveCheckBox.isChecked = YES;
-        [myMoveCheckBox setNeedsDisplay];
-        
-        if(isWin(board,'x') == 1){
-            ++self.computerWins;
-            NSLog(@"Computer win. Total: %d", self.computerWins);
-            self.labelComputerWins.text = [NSString stringWithFormat:@"Computer wins: %d", self.computerWins];
-            [self popUpGameResult:@"You lose" message:@"Sorry!"];
-            return;
-        }
-        
         if(isFull(board) == 1){
             ++self.draws;
             NSLog(@"Draw. Total: %d", self.draws);
@@ -143,6 +132,37 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
             [self popUpGameResult:@"Draw" message:@"No winer this time."];
             return;
         }
+        
+        //after human moving, computer needs to pick up the best position to move
+        //add time delay here to make computer moving have some time delay for "thinking"
+        [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(computerMoving:) userInfo:nil repeats:NO];
+    }
+}
+
+-(void)computerMoving:(NSTimer *)timer{
+    int posAI = AI(board);
+    Move(board,posAI,'x');
+    NSLog(@"Computer pick position: %d, board=%s",posAI,board);
+    JZCheckBox *myMoveCheckBox = self.checkBoxHolder[posAI];
+    //myMoveCheckBox.offImage = [UIImage imageNamed:@"bigX"];
+    myMoveCheckBox.onImage = [UIImage imageNamed:@"bigX"];
+    myMoveCheckBox.isChecked = YES;
+    [myMoveCheckBox setNeedsDisplay];
+    
+    if(isWin(board,'x') == 1){
+        ++self.computerWins;
+        NSLog(@"Computer win. Total: %d", self.computerWins);
+        self.labelComputerWins.text = [NSString stringWithFormat:@"Computer wins: %d", self.computerWins];
+        [self popUpGameResult:@"You lose" message:@"Sorry!"];
+        return;
+    }
+    
+    if(isFull(board) == 1){
+        ++self.draws;
+        NSLog(@"Draw. Total: %d", self.draws);
+        self.labelDraws.text = [NSString stringWithFormat:@"Draws: %d", self.draws];
+        [self popUpGameResult:@"Draw" message:@"No winer this time."];
+        return;
     }
 }
 
@@ -150,10 +170,16 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
 {
     UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
+    self.self.gameIsOver = YES;
     return;
 }
 
+- (IBAction)segmentedControlAction:(id)sender {
+    [self buttonNewGame:nil];
+}
+
 - (IBAction)buttonReset:(id)sender {
+    self.self.gameIsOver = NO;
     self.youWins = 0;
     self.computerWins = 0;
     self.draws = 0;
@@ -171,10 +197,13 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
         board[i] = '-';
     }
     NSLog(@"Reset");
-    [self takeFirstRandomCornerPosition];
+    if(self.segmentedControl.selectedSegmentIndex == 1){//computer goes first
+        [self takeFirstRandomCornerPosition];
+    }// else human goes first, do nothing
 }
 
 - (IBAction)buttonNewGame:(id)sender {
+    self.self.gameIsOver = NO;
     for(int i=0; i<self.checkBoxHolder.count; i++){
         JZCheckBox *checkBox = self.checkBoxHolder[i];
         checkBox.onImage = [UIImage imageNamed:@"checkbox_yes"];
@@ -185,7 +214,10 @@ char board[TicTacToeTotalNum] = {'-','-','-','-','-','-','-','-','-'};
         board[i] = '-';
     }
     NSLog(@"New Game");
-    [self takeFirstRandomCornerPosition];
+    if(self.segmentedControl.selectedSegmentIndex == 1){//computer goes first
+        [self takeFirstRandomCornerPosition];
+    }// else human goes first, do nothing
+
 }
 
 -(void)takeFirstRandomCornerPosition

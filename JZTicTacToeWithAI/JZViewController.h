@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelComputerWins;
 @property (weak, nonatomic) IBOutlet UILabel *labelDraws;
 
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+- (IBAction)segmentedControlAction:(id)sender;
 
 - (IBAction)buttonReset:(id)sender;
 - (IBAction)buttonNewGame:(id)sender;
